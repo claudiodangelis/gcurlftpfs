@@ -1,0 +1,69 @@
+Copyright (C) 2012 Claudio Dawson d'Angelis
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    A copy of the GNU General Public License version 2 is set out below.
+    You can also obtain a written copy from the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+OVERVIEW
+
+	gcurlftpfs provides a lightweight graphical user interface and
+	tools to curlftpfs program.
+	
+	Homepage: http://www.claudiodangelis.it/projects/gcurlftpfs
+	Sourceforge: https://sourceforge.net/projects/gcurlftpfs/
+			
+VERSION NOTES
+	
+	Latest version: gcurlftpfs 0.1-a
+	This version is distribute as unstable
+
+AUTHOR
+
+	Original author is Claudio Dawson d'Angelis a.k.a. telebabbo
+	info@claudiodangelis.it
+	http://www.claudiodangelis.it
+
+REQUIREMENTS
+
+	python 2.7
+	curlftpfs
+	fuse
+
+INSTALLATION AND USAGE
+
+	You don't need to install gcurlftpfs since it's actually a python script.
+	To run gcurlftpfs you have several ways:
+
+	1)
+		python gcurlftpfs.py
+
+	2)
+		chmod +x gcurlftpfs.py
+		./gcurlftpfs.py
+		
+FEATURES
+	
+	- performing and managing of curlftpfs connections, even those established via command line
+
+KNOWN ISSUES
+
+	a) There is no stable error handler deployed yet, behaviors in case of errors can be unpredictable
+	b) When a connection is established, Console echoes plain-text username's password
+	
+NEXT RELEASE RESOLUTIONS
+
+	- bookmarks
+	- automounting bookmarks
+	- import bookmarks from FileZilla, gftp, etc
+	- recent servers
