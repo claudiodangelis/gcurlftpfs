@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 from Tkinter import *
 import tkFileDialog, subprocess, sys, os, threading
-version='0.1a'
+version='0.2'
+debug=False
 class about:
 	def __init__(self,root):
 		self.root=root
@@ -43,7 +44,7 @@ class main_gui:
 		self.mounted_frame=Frame(self.main_frame,relief=GROOVE,padx=10,pady=10,borderwidth=2)
 		self.mounted_frame.grid(row=0,column=1,sticky=E+W+N+S,columnspan=999)
 		Label(self.mounted_frame,text='Mounted hosts').grid(row=0,column=0,sticky=W)
-		Button(self.mounted_frame,text='Refresh',command=lambda : self.watch_mounted(),padx=-3,pady=-3).grid(row=1,sticky=W)
+		Button(self.mounted_frame,text='Refresh',width=8,command=lambda : self.watch_mounted(),padx=-3,pady=-3).grid(row=1,sticky=W)
 		self.mounted_entries_frame=Frame(self.mounted_frame)
 		self.mounted_entries_frame.grid(sticky=E+W)
 		Label(self.left_frame, text="Hostname").grid(row=1,column=0,sticky=E)
@@ -93,7 +94,7 @@ class main_gui:
 			self.mounted_entries_frame.grid()
 			self.mounted_hostname=[]
 			self.mounted_mountpoint=[]
-			proc = subprocess.Popen(['/bin/mount'],stdout=subprocess.PIPE)
+			proc = subprocess.Popen([mount_cmd],stdout=subprocess.PIPE)
 			while True:
 				procline = proc.stdout.readline()
 				if procline != '':
@@ -118,9 +119,9 @@ class main_gui:
 			for i in range(len(self.mounted_hostname)):							
 				self.mef=Frame(self.mounted_entries_frame, relief=GROOVE, borderwidth=1)
 				self.mef.grid(sticky=E+W,pady=4)
-				Label(self.mef,text=self.mounted_hostname[i],font="mono 10").grid(padx=4,row=0,column=3,sticky=EW)
-				Button(self.mef,text='Open folder',command=lambda mnt_mountpoint=self.mounted_mountpoint[i] : self.open_folder(mnt_mountpoint),padx=-3,pady=-3).grid(row=0,column=1,sticky=E)
-				Button(self.mef,text='Unmount',command=lambda mnt_hostname=self.mounted_hostname[i],mnt_mountpoint=self.mounted_mountpoint[i]: self.fu_forward(mnt_hostname,mnt_mountpoint),padx=-3,pady=-3).grid(row=0,column=0,sticky=E)
+				Label(self.mef,text=self.mounted_hostname[i],font="mono 12").grid(padx=4,row=0,column=0,sticky=EW)
+				Button(self.mef,text='Open',width=8,command=lambda mnt_mountpoint=self.mounted_mountpoint[i] : self.open_folder(mnt_mountpoint),padx=-3,pady=-3).grid(row=1,column=0,sticky=E)
+				Button(self.mef,text='Unmount',width=10,command=lambda mnt_hostname=self.mounted_hostname[i],mnt_mountpoint=self.mounted_mountpoint[i]: self.fu_forward(mnt_hostname,mnt_mountpoint),padx=-3,pady=-3).grid(row=1,column=1,sticky=E)
 
 	def quick_connect_reset(self):
 		self.hostname_entry.delete(0,END)
@@ -143,7 +144,7 @@ class main_gui:
 		self.mountpoint_entry.insert(0,dirname)
 
 	def open_folder(self,mountpoint):
-		subprocess.Popen(['xdg-open',mountpoint])
+		subprocess.Popen([open_cmd,mountpoint])
 
 class fuse_connection:
 	def pre_connect(self,hostname,username,password,port,mountpoint):
@@ -189,7 +190,7 @@ class fuse_connection:
 	def unmount(self,umnt_hostname,umnt_mountpoint):
 		self.umnt_hostname=umnt_hostname
 		self.umnt_mountpoint=umnt_mountpoint
-		self.umnt_cmd_string=[fusermount,'-u',umnt_mountpoint]
+		self.umnt_cmd_string=[unmount_cmd,unmount_flag,umnt_mountpoint]
 		umnt_process = subprocess.Popen(self.umnt_cmd_string, stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
 
 		complete = False
@@ -213,20 +214,50 @@ def check_dep(dependency):
 		if os.path.isfile(env_path[i]+'/'+dependency):
 			return env_path[i]+'/'+dependency
 	return 1
+
+def fatal_error(err):
+	print 'FATAL ERROR'
+	if err==0:
+		print 'Your operating system is not supported'
+	elif err==1:
+		print 'curlftpfs is required'
+		print 'You can download it from:'
+		print 'http://sourceforge.net/projects/curlftpfs/'
+	elif err==2:
+		print 'fusermount is required'
+		print 'You can download them from'
+		print 'http://sourceforge.net/projects/fuse/'
+	
+	print 'INFO: http://wwww.claudiodangelis.it/projects/gcurlftpfs'
+
+
+OS=os.uname()
+if OS[0]=="Darwin":
+	mount_cmd="/sbin/mount"
+	unmount_cmd="/sbin/umount"
+	unmount_flag=""
+	open_cmd="/usr/bin/open"
+elif OS[0]=="Linux":
+	mount_cmd="/bin/mount"
+	unmount_cmd=check_dep('fusermount')
+	unmount_flag="-u"
+	open_cmd="xdg-open"
+elif OS[0]!="Linux" and OS[0]!="Darwin":
+	OS[0]=0
 	
 curlftpfs=check_dep('curlftpfs')
-fusermount=check_dep('fusermount')
-if curlftpfs is not 1 and fusermount is not 1:
-	root=Tk()
-	fuse_init=fuse_connection()
-	app=main_gui(root)
-	root.wm_title("gcurlftpfs - "+version)
-	root.mainloop()
+
+if OS[0] is 0:
+	fatal_error(0)
 else:
-	print 'FATAL ERROR'
-	print 'curlftpfs or fusermount are required and seems not to be installed'
-	print 'You can download them from'
-	print 'http://sourceforge.net/projects/curlftpfs/'
-	print 'http://sourceforge.net/projects/fuse/\n'
-	print 'If you are sure to had them installed, please consider to adjust your $PATH\n'
-	print 'INFO: http://wwww.claudiodangelis.it/projects/gcurlftpfs'
+	if curlftpfs is not 1:
+		if OS[0] == "Linux" and unmount_cmd is 0:
+			fatal_error(2)
+		else:
+			root=Tk()
+			fuse_init=fuse_connection()
+			app=main_gui(root)
+			root.wm_title("gcurlftpfs - "+version)
+			root.mainloop()
+	else:
+		fatal_error(1)
