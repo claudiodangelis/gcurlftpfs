@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 from Tkinter import *
 import tkFileDialog, subprocess, sys, os, threading
-version='0.2'
+version='0.2.1'
 debug=False
 class about:
 	def __init__(self,root):
@@ -157,16 +157,22 @@ class fuse_connection:
 				auth_data=""
 			else:
 				if password=="":
-					auth_data=username+"@"
+					auth_data=username
 				else:
-					auth_data=username+':'+password+'@'
+					auth_data=username+':'+password
 			
 			if port =="":
 				port='21'
+
+
+			auth_data='user=%s' % auth_data
+
 			self.cmd_string=[]
 			self.cmd_string.append(curlftpfs)
 			self.cmd_string.append('-v')
-			self.cmd_string.append(auth_data+hostname+':'+port)
+			self.cmd_string.append('-o')
+			self.cmd_string.append(auth_data)
+			self.cmd_string.append(hostname+':'+port)
 			self.cmd_string.append(mountpoint)
 			self.connect(self.cmd_string)
 			
