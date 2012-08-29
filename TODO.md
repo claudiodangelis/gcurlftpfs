@@ -18,7 +18,10 @@
 			
 	
 3. sshfs support
+
 4. Rewrite the GUI with Qt libs
+---In Progress, 80% SK
+
 5. Automount (via /etc/fstab)
 6. Import bookmarks from Filezilla, gftp, Coda, etc
 7. An installer
