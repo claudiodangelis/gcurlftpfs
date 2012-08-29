@@ -1,4 +1,4 @@
-Copyright (C) 2012 Claudio Dawson d'Angelis
+Copyright (C) 2012 Claudio Dawson d'Angelis, Stefan Kent
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,18 +21,21 @@ OVERVIEW
 	tools to curlftpfs program.
 	
 	Homepage: http://www.claudiodangelis.it/projects/gcurlftpfs
-	Sourceforge: https://sourceforge.net/projects/gcurlftpfs/
+	Github: http://github.com/claudiodangelis/gcurlftpfs
 			
 VERSION NOTES
 	
-	Latest version: gcurlftpfs 0.2
+	Latest version: gcurlftpfs 0.2.1
 	This version is distribute as unstable
 
-AUTHOR
+AUTHORS
 
-	Original author is Claudio Dawson d'Angelis
-	info@claudiodangelis.it
+	Claudio Dawson d'Angelis
+	claudiodangelis@gmail.com
 	http://www.claudiodangelis.it
+
+	Stefan Kent
+	skent@twosphere.com.au
 
 REQUIREMENTS
 

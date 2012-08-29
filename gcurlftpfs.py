@@ -4,7 +4,7 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 import subprocess, sys, os, threading, pprint
 version='0.3.1'
-debug=False
+debug=True
 
 class about_window(Gtk.Dialog):
 	def __init__(self, parent):
@@ -24,7 +24,7 @@ class about_window(Gtk.Dialog):
 		mainbox.add(desc)
 
 		auth = Gtk.Label(justify=Gtk.Justification.LEFT)
-		auth.set_markup("Claudio Dawson d\'Angelis (<a href='mailto:info@claudiodangelis.it'>info@claudiodangelis.it</a>)\nStefan Kent (<a href='mailto:skent@twosphere.com.au'>skent@twosphere.com.au</a>)\n\n<a href='http://www.claudiodangelis.it/projects/gcurlftpfs'>http://www.claudiodangelis.it/projects/gcurlftpfs</a>\n\n")
+		auth.set_markup("Claudio Dawson d\'Angelis (<a href='mailto:claudiodangelis@gmail.com'>claudiodangelis@gmail.com</a>)\nStefan Kent (<a href='mailto:skent@twosphere.com.au'>skent@twosphere.com.au</a>)\n\n<a href='http://www.claudiodangelis.it/projects/gcurlftpfs'>http://www.claudiodangelis.it/projects/gcurlftpfs</a>\n\n")
 		mainbox.add(auth)
 
 		self.show_all()
