@@ -1,9 +1,7 @@
 import sys,os
 from conn import conn
 
-global testing
-
-version	= '3.1'
+version	= '0.3.1'
 testing	= True
 debug	= True
 
