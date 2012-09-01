@@ -7,6 +7,7 @@ class sshfs(object):
 		print conn.server
 		print conn.port
 		print conn.mountpoint
+		print conn.name
 
 	def unmount(self,conn):
 		print 'Unmounting:'

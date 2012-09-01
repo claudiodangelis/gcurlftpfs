@@ -8,7 +8,7 @@ testing	= True
 debug	= True
 
 if testing:
-	a = conn('morph','mypass','192.168.0.9','22','/mnt/morpheus','ssh')
+	a = conn('morph','mypass','192.168.0.9','22','/mnt/morpheus','ftp')
 
 	print a
 	a.mount()

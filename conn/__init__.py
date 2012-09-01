@@ -5,7 +5,7 @@ class conn(object):
 
 	__all__ = set()
 
-	def __init__(self,username,password,server,port,mountpoint,protocol):
+	def __init__(self,username,password,server,port,mountpoint,protocol,name='Default'):
 		
 		self.username	= username
 		self.password	= password
@@ -13,6 +13,10 @@ class conn(object):
 		self.port		= port
 		self.mountpoint	= mountpoint
 		self.protocol	= protocol
+		self.name		= name
+		
+		if self.name == 'Default':
+			self.name = self.server
 
 		self.__class__.__all__.add(self)
 		
